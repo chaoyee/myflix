@@ -13,6 +13,15 @@ describe VideosController do
       assigns(:video).should be_instance_of(Video)
     end
   
+    it "sets @reviews with authenticated users" do 
+      session[:user_id] = Fabricate(:user).id
+      bond = Video.create(title: "Bonds", description: "Bonds test!")
+      review1 = Fabricate(:review, video: bond)
+      review2 = Fabricate(:review, video: bond)
+      get :show, id: bond.id
+      expect(assigns(:reviews)).to match_array([review1, review2])
+    end  
+
     it "render the show template" do
       user = User.create(email: "test@test.com", password: "password", full_name: "Test Test!")  
       session[:user_id] = user.id
