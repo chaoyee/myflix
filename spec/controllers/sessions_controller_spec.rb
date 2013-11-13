@@ -61,20 +61,4 @@ describe SessionsController do
       expect(flash[:notice]).not_to be_blank
     end  
   end  
-end  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+end

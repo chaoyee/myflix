@@ -35,7 +35,7 @@ describe VideosController do
       # bond = Fabricate(:video)
   
       get :show, id: bond.id
-      expect(response).to redirect_to root_path
+      expect(response).to redirect_to sign_in_path
     end  
   end
 
@@ -52,7 +52,7 @@ describe VideosController do
     it "redirects to sign in page for the unauthenticated uses" do
       bond = Video.create(title: "Bonds", description: "Bonds test!") 
       post :search, search_term: 'bon'
-      expect(response).to redirect_to root_path
+      expect(response).to redirect_to sign_in_path
     end  
   end
 end
