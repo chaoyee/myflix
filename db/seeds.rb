@@ -37,3 +37,5 @@ Category.create(name: 'Movie Animation')
 Review.create(user_id: 1, video_id: 2, rating: 4, content: "A GREAT movie!")
 Review.create(user_id: 2, video_id: 2, rating: 5, content: "A GREAT GREAT movie!")
 
+QueueItem.create(video_id: 2, user_id: 1, position: 1)
+QueueItem.create(video_id: 2, user_id: 2, position: 2) 
