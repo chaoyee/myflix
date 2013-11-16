@@ -3,7 +3,7 @@ class ReviewsController < ApplicationController
 
   def create
     @video = Video.find(params[:video_id])
-    review = Review.new(review_params.merge!(video: @video, user: current_user))
+    review = Review.new(review_params)
     if review.save
       redirect_to video_path(@video), notice: "Your review has been saved!"
     else
@@ -15,6 +15,6 @@ class ReviewsController < ApplicationController
   private
 
   def review_params
-    params.require(:review).permit(:rating, :content)
+    params.require(:review).permit(:rating, :content).merge!(video: @video, user: current_user)
   end  
 end  

@@ -16,6 +16,13 @@ class QueueItemsController < ApplicationController
     end    
   end
 
+  def destroy
+    queue_item = QueueItem.find(params[:id])
+    queue_item.destroy if current_user.queue_items.include?(queue_item)
+    flash[:notice] = "Your video has been removed from your queue!"
+    redirect_to queue_items_path
+  end
+
   private
 
   def new_queue_item_position
