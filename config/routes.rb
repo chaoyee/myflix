@@ -5,6 +5,7 @@ Myflix::Application.routes.draw do
     collection do    
       post :search, to: "videos#search"
     end
+    resources :reviews, only: [:create]
   end 
   get 'ui(/:action)', controller: 'ui'
   get 'home', to: "videos#index"
@@ -13,4 +14,5 @@ Myflix::Application.routes.draw do
   post 'sign_in', to: 'sessions#create'
   get  'sign_out', to: 'sessions#destory'
   resources :users, only: [:create]
+  resources :queue_items, only: [:index, :create, :destroy]
 end

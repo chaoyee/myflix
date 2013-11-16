@@ -6,6 +6,10 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+User.create(email: "chaoyee@test.com", password: 'password', full_name: "Charles Hsu")
+User.create(email: "test@test.com", password: 'password', full_name: "Tester Lee")
+
+
 Video.create(title: 'The Shield', description: 'This gritty crime drama follows Detective Vic Mackey (Michael Chiklis) as he leads a group of detectives known as the Strike Team throughout the crime ridden streets of California. Though is goal of stopping crime at its source is admirable, his methods are anything but on the straight and narrow, and become increasingly corrupt as time goes on. Romantic relationships are equally difficult to navigate; Mackey marriage falters due to several indiscretions, as well as the stress of paying for the education of a special needs child. ', small_cover_url: '/img/the_shield_225x225.jpg', large_cover_url: '/img/the_shield_1000x1000.jpg', category_id: 1)
 Video.create(title: 'Supernatural', description: 'After a year apart, Sam and Dean are reunited in the Eighth Season premiere. After escaping from Purgatory with the help of a vampire named Benny, Dean heads straight for Sam, but the reunion is not exactly everything he imagined it would be. Although Sam drops everything to join his brother, leaving the life he had grown accustomed to enjoy turns out to be harder than he imagined. In the meantime, Benny help turns out to be more than what Dean bargained for. ', small_cover_url: '/img/supernatural_small.jpg', large_cover_url: '/img/supernatural_large.jpg', category_id: 2)
 Video.create(title: 'Gladiator', description: 'Watch one of the best award-winning movies of all time, the Ridley Scott directed "Gladiator" coming to you in a Blu-ray two-disc set. Starring Oscar-winning actor Russel Crowe, this historical drama takes place in the year 180 when the Roman emperor Marcus Aurelius angers his devious son Commodus by making his army general Maximus the sole caretaker of the throne. As Commodus ascends the throne by murdering his father, sentencing Maximus execution and killing his family, Maximus escapes. ', small_cover_url: '/img/gladiator_small.jpg', large_cover_url: '/img/gladiator_large.jpg', category_id: 1)
@@ -29,3 +33,9 @@ Video.create(title: "Saving Private Ryan", description: "Following the Normandy 
 Category.create(name: 'Movie Comedies')
 Category.create(name: 'Movie Dramas')
 Category.create(name: 'Movie Animation')
+
+Review.create(user_id: 1, video_id: 2, rating: 4, content: "A GREAT movie!")
+Review.create(user_id: 2, video_id: 2, rating: 5, content: "A GREAT GREAT movie!")
+
+QueueItem.create(video_id: 2, user_id: 1, position: 1)
+QueueItem.create(video_id: 2, user_id: 2, position: 2) 

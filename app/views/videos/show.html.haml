@@ -8,6 +8,29 @@
           %h3 #{@video.title}
           %span Rating: 4.5/5.0  
         %p #{@video.description}
-        .actions
+        .actions  
           %a.btn.btn-primary(href="") Watch Now
-          %a.btn(href="") + My Queue
+          = link_to "+ My Queue", queue_items_path(video_id: @video.id ), method: :post, class: 'btn'
+%section.reviews.container
+  .row
+    .span10.offset1
+      = form_for [@video, Review.new] do |f|
+        %fieldset
+          %label Rate this video
+          = f.select :rating, options_for_select([5,4,3,2,1].map {|number| [pluralize(number, "Star")]})
+          %label Write Review
+          = f.text_area :content, row: 6, class: "span6"
+        %fieldset.actions.clearfix
+          %input(type="submit" value="Submit" class="btn")
+          = link_to "Cancel", @video
+      %header
+        %h3 User Reviews (#{@reviews.count})
+      %ul
+        - @reviews.each do |review|
+          %article.review
+            %li.row
+              .span2
+                %span Rating: #{review.rating} / 5
+                %p by <a href="">#{review.user.full_name}</a>
+              .span8
+                = review.content

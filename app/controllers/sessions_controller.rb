@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
       redirect_to home_path
     else
       flash[:error] = 'There is something wrong with your email or password.'
-      redirect_to register_path
+      redirect_to sign_in_path
     end
   end
 
