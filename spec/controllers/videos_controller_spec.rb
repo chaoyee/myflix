@@ -5,9 +5,7 @@ describe VideosController do
     let(:bond) { Fabricate(:video) }
     let(:bob)  { Fabricate(:user)  }
 
-    before do
-      session[:user_id] = bob.id
-    end
+    before { set_current_user(bob) }
 
     it "with authenticated users set the @video variable" do
       get :show, id: bond.id
@@ -36,7 +34,7 @@ describe VideosController do
 
   describe "POST search" do
     it "sets the @videos for authenticated users" do
-      session[:user_id] = Fabricate(:user) 
+      set_current_user
       bond = Video.create(title: "Bonds", description: "Bonds test!")
   
       post :search, search_term: 'bon'
