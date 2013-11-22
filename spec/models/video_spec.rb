@@ -33,34 +33,28 @@ describe Video do
   # rewrite using shoulda matchers
 
   it { should belong_to(:category)}
+  it { should have_many(:reviews).order(created_at: :desc)}
+  it { should have_many(:queue_items)}
   it { should validate_presence_of(:title)}
   it { should validate_presence_of(:description)}
   it { should validate_uniqueness_of(:title)}
-  it { should have_many(:reviews).order(created_at: :desc)}
-
+  
   describe "search_by_title" do
-      it "returns an empty array if there is no match" do
-        video1 = Video.create(title: "Hello Kitty", description: "Hello hello Kitty!")
-        video2 = Video.create(title: "Superman", description: "Super super superman")
-        expect(Video.search_by_title("spiderman")).to eq([])
-      end
+    let(:video1) { Video.create(title: "Hello Super Kitty", description: "Hello hello Kitty!") }
+    let(:video2) { Video.create(title: "Superman", description: "Super super superman")  }
 
-      it "returns an array of one video for an exact match" do
-        video1 = Video.create(title: "Hello Kitty", description: "Hello hello Kitty!")
-        video2 = Video.create(title: "Superman", description: "Super super superman")
-        expect(Video.search_by_title("Superman")).to eq([video2])
-      end
-
-      it "returns an array of one video for a partial match" do
-        video1 = Video.create(title: "Hello Kitty", description: "Hello hello Kitty!")
-        video2 = Video.create(title: "Superman", description: "Super super superman")
-        expect(Video.search_by_title("kit")).to eq([video1])
-      end
-
-      it "returns an array of all matches ordered by created_at" do
-        video1 = Video.create(title: "Hello Super Kitty", description: "Hello hello Kitty!")
-        video2 = Video.create(title: "Superman", description: "Super super superman", created_at: 2.days.ago)
-        expect(Video.search_by_title("Super")).to eq([video1, video2])
-      end
+    it "returns an empty array if there is no match" do
+      expect(Video.search_by_title("spiderman")).to eq([])
     end
+    it "returns an array of one video for an exact match" do
+      expect(Video.search_by_title("Superman")).to eq([video2])
+    end
+    it "returns an array of one video for a partial match" do
+      expect(Video.search_by_title("kit")).to eq([video1])
+    end
+    it "returns an array of all matches ordered by created_at" do
+      video2.created_at = 2.days.ago
+      expect(Video.search_by_title("Super")).to eq([video1, video2])
+    end
+  end
 end
