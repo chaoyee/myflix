@@ -10,10 +10,10 @@ describe QueueItemsController do
       get :index
       expect(assigns(:queue_items)).to eq([queue_item])
     end  
-    it "redirects to the sign in page for the unauthenticated user" do
-      get :index
-      expect(response).to redirect_to sign_in_path
-    end  
+
+    it_behaves_like "requires sign in" do
+      let(:action) { get :index }
+    end 
   end
   describe "POST create" do
     let(:bob)    { Fabricate(:user)  }
@@ -49,11 +49,10 @@ describe QueueItemsController do
       post :create, video_id: video.id
       expect(bob.queue_items.count).to eq(1)   
     end  
-    it "redirects to the sign in page for unauthenticated users" do
-      session[:user_id] = nil
-      post :create, video_id: video.id
-      expect(response).to redirect_to sign_in_path  
-    end  
+
+    it_behaves_like "requires sign in" do
+      let(:action) { post :create, video_id: video.id }
+    end   
   end 
   describe "DELETE destroy" do
     let(:bob)    { Fabricate(:user)  }
@@ -77,12 +76,11 @@ describe QueueItemsController do
       delete :destroy, id: queue_item.id
       expect(QueueItem.count).to eq(1)
     end  
-    it "redirects to the sign in page for unauthenticated users" do
-      session[:user_id] = nil
-      queue_item = Fabricate(:queue_item, video: video, user: bob )
-      delete :destroy, id: queue_item.id
-      expect(response).to redirect_to sign_in_path    
+    
+    it_behaves_like "requires sign in" do
+      let(:action) { delete :destroy, id: 1 }
     end 
+
     it "normalize the remaining queue items" do
       video2 = Fabricate(:video)
       queue_item1 = Fabricate(:queue_item, video: video,  user: bob, position: 1 )
@@ -137,10 +135,9 @@ describe QueueItemsController do
       end  
     end  
     context "with unauthenticated users" do
-      it "redirects to the sign in page" do
-        post :update_queue, queue_items: [{id: 1, position: 2}, {id: 2, position: 3}]
-        expect(response).to redirect_to sign_in_path        
-      end  
+      it_behaves_like "requires sign in" do
+        let(:action) { post :update_queue, queue_items: [{id: 1, position: 2}, {id: 2, position: 3}] }
+      end   
     end  
     context "with queue items that do not belong to the current user" do
       it "should not change the queue_item" do
