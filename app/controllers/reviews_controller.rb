@@ -7,6 +7,7 @@ class ReviewsController < ApplicationController
     if review.save
       redirect_to video_path(@video), notice: "Your review has been saved!"
     else
+      flash[:error] = review.errors.full_messages.join(', ')
       @reviews = @video.reviews
       render "videos/show"
     end  
