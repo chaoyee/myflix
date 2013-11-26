@@ -4,16 +4,14 @@
       %article
         %header
           %img(src="http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(@user.email.downcase)}?s=40")
-          %h2
-            = "#{@user.full_name}'s videos (#{@queue_items.count})"
-          %button.btn Follow
+          %h2 #{@user.full_name}'s videos (#{@queue_items.count}) 
+          = link_to 'Follow', relationships_path(leader_id: @user.id), method: :post, class: 'btn' if current_user.can_follow?(@user) 
         %table.table
           %thead
             %tr
               %th(width="30%") Video Title
               %th(width="15%") Genre
           %tbody
-            -# - 8.times do
             - @queue_items.each do |queue_item|
               %tr
                 %td

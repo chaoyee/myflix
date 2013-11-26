@@ -5,6 +5,22 @@ class RelationshipsController < ApplicationController
     @relationships = current_user.following_relationships
   end
 
+  def create
+    leader = User.find(params[:leader_id])
+    if current_user.can_follow?(leader)
+      relationship = Relationship.new(leader_id: params[:leader_id], follower_id: current_user.id)
+      if relationship.save
+        flash[:notice] = "You have followed #{leader.full_name}."  
+        redirect_to people_path   
+      else
+        flash[:error] = relationship.errors.full_messages.join(', ')
+        redirect_to user_path(leader.id)
+      end
+    else
+      redirect_to user_path(leader.id)
+    end 
+  end  
+
   def destroy
     relationship = Relationship.find(params[:id])
     if current_user == relationship.follower    

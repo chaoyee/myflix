@@ -11,4 +11,18 @@ describe User do
   it { should have_many(:reviews).order(created_at: :desc)}
   it { should have_many(:queue_items).order(position: :asc)}
   it { should have_secure_password }
+
+  describe "#follows?" do
+    let(:bob)  { Fabricate(:user) }
+    let(:joe)  { Fabricate(:user) }
+
+    it 'returns true if the user has a following relationship with another user' do
+      Fabricate(:relationship, follower: bob, leader: joe)
+      expect(bob.follows?(joe)).to be_true      
+    end
+    it 'returns false if the user does not have a following relationship with another user' do
+      Fabricate(:relationship, follower: bob, leader: joe)
+      expect(joe.follows?(bob)).to be_false    
+    end
+  end
 end  
