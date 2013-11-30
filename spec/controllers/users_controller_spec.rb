@@ -39,17 +39,18 @@ describe UsersController do
     end 
   end
 
-  context 'email sending' do  
-    it 'sends out the email' do
+  context 'email sending' do 
+    before do
       post :create, user: {email: "test@test.com", password: "password", full_name: "Joe Tester"}
+    end 
+    
+    it 'sends out the email' do
       ActionMailer::Base.deliveries.should_not be_empty
     end
     it 'sends to the right recipent' do
-      post :create, user: {email: "test@test.com", password: "password", full_name: "Joe Tester"}
       expect(ActionMailer::Base.deliveries.last.to).to eq(['test@test.com'])
     end
     it 'has the right content' do
-      post :create, user: {email: "test@test.com", password: "password", full_name: "Joe Tester"}
       expect(ActionMailer::Base.deliveries.last.body).to include('Joe Tester')
     end
   end  
