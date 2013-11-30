@@ -13,7 +13,7 @@ describe VideosController do
       assigns(:video).should be_instance_of(Video)
     end
   
-    it "sets @reviews with authenticated users" do 
+    it "sets @reviews with authenticated users" do
       review1 = Fabricate(:review, video: bond)
       review2 = Fabricate(:review, video: bond)
       get :show, id: bond.id

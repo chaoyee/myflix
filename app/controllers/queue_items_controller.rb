@@ -6,11 +6,11 @@ class QueueItemsController < ApplicationController
   end
 
   def create
-    queue_item = QueueItem.create(video_id: params[:video_id], user_id: current_user.id, position: new_queue_item_position)
+    queue_item = QueueItem.new(video_id: params[:video_id], user_id: current_user.id, position: new_queue_item_position)
     if queue_item.save
       flash[:notice] = "Your video has been added to your queue!"     
     else
-      flash[:error] = queue_item.errors.full_messages[0]
+      flash[:error] = queue_item.errors.full_messages.join(', ')
     end 
     redirect_to queue_items_path 
   end

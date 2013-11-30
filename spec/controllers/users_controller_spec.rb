@@ -37,5 +37,59 @@ describe UsersController do
         expect(assigns(:user)).to be_instance_of(User)
       end  
     end 
+  end
+
+  context 'email sending' do 
+    before do
+      post :create, user: {email: "test@test.com", password: "password", full_name: "Joe Tester"}
+    end 
+    
+    it 'sends out the email' do
+      ActionMailer::Base.deliveries.should_not be_empty
+    end
+    it 'sends to the right recipent' do
+      expect(ActionMailer::Base.deliveries.last.to).to eq(['test@test.com'])
+    end
+    it 'has the right content' do
+      expect(ActionMailer::Base.deliveries.last.body).to include('Joe Tester')
+    end
   end  
+
+  describe "GET show" do
+    let(:bob)  { Fabricate(:user)  }
+    let(:bond) { Fabricate(:video) }
+
+    before { set_current_user(bob) }
+
+    it "set the @user variable with authenticated users " do
+      get :show, id: bob.id
+      assigns(:user).should eq(bob)  #be_instance_of(User)
+    end
+  
+    it "sets @queue_items with authenticated users" do
+      castle = Fabricate(:video)
+      queue_item1 = Fabricate(:queue_item, video: bond, user: bob)
+      queue_item2 = Fabricate(:queue_item, video: castle, user: bob)
+      get :show, id: bob.id
+      expect(assigns(:queue_items)).to match_array([queue_item1, queue_item2])
+    end  
+
+    it "sets @reviews with authenticated users" do
+      review1 = Fabricate(:review, video: bond, user: bob)
+      review2 = Fabricate(:review, video: bond, user: bob)
+      get :show, id: bob.id
+      expect(assigns(:reviews)).to match_array([review1, review2])
+    end   
+
+    it "render the show template" do
+      get :show, id: bob.id
+      response.should render_template :show
+    end
+
+    it "redirects unauthenticated users" do
+      session[:user_id] = nil
+      get :show, id: bob.id
+      expect(response).to redirect_to sign_in_path
+    end  
+  end
 end  
