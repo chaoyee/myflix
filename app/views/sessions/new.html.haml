@@ -5,7 +5,7 @@
         %header
           %h1 Sign in
         %fieldset
-          = label_tag :email
+          = label_tag :email, 'Email Address'
           = email_field_tag :email, params[:email]
           = label_tag :password
           = password_field_tag :password, params[:password]

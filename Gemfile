@@ -19,6 +19,7 @@ group :development do
   gem 'pry'
   gem 'pry-nav'
   gem 'letter_opener'
+  gem 'capybara-email'
 end
 
 group :production do
