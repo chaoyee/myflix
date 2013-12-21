@@ -72,7 +72,7 @@ Myflix::Application.configure do
   config.action_mailer.smtp_settings = {
     address:              ENV['MAILGUN_SMTP_SERVER'],    # 'smtp.gmail.com',
     port:                 ENV['MAILGUN_SMTP_PORT'],      # 587,
-    domain:               'yourapp.heroku.com',          # 'example.com',
+    domain:               'myflixch.herokuapp.com',      # 'example.com',
     user_name:            ENV['MAILGUN_SMTP_LOGIN'],     # ENV["gmail_username"],
     password:             ENV['MAILGUN_SMTP_PASSWORD'],  # ENV["gmail_password"],
     authentication:       'plain',
