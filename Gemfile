@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '=4.0.1'
+gem 'rails', '=4.0.2'
 gem 'haml-rails'
 gem 'bootstrap-sass', '2.3.2.2'
 gem 'turbolinks'

@@ -12,9 +12,8 @@ describe User do
   it { should have_many(:queue_items).order(position: :asc)}
   it { should have_secure_password }
 
-  it "generates a random token when the user is created" do
-    bob = Fabricate(:user)
-    expect(bob.token).to be_present
+  it_behaves_like "tokenable" do
+    let (:object) { Fabricate(:user) }
   end
 
   describe "#follows?" do
