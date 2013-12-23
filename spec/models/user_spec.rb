@@ -12,9 +12,8 @@ describe User do
   it { should have_many(:queue_items).order(position: :asc)}
   it { should have_secure_password }
 
-  it "generates a random token when the user is created" do
-    bob = Fabricate(:user)
-    expect(bob.token).to be_present
+  it_behaves_like "tokenable" do
+    let (:object) { Fabricate(:user) }
   end
 
   describe "#follows?" do
@@ -28,6 +27,19 @@ describe User do
     it 'returns false if the user does not have a following relationship with another user' do
       Fabricate(:relationship, follower: bob, leader: joe)
       expect(joe.follows?(bob)).to be_false    
+    end
+  end
+  describe "#follow" do
+    it "follows another use" do
+      bob = Fabricate(:user)
+      joe = Fabricate(:user)
+      bob.follow(joe)
+      expect(bob.follows?(joe)).to be_true
+    end
+    it "does not follow one self" do
+      bob = Fabricate(:user)
+      bob.follow(bob)
+      expect(bob.follows?(bob)).not_to be_true
     end
   end
 end  

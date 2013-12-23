@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '=4.0.1'
+gem 'rails', '=4.0.2'
 gem 'haml-rails'
 gem 'bootstrap-sass', '2.3.2.2'
 gem 'turbolinks'
@@ -19,10 +19,12 @@ group :development do
   gem 'pry'
   gem 'pry-nav'
   gem 'letter_opener'
+  gem 'capybara-email'
 end
 
 group :production do
   gem 'pg'
+  gem 'rails_12factor'
 end
 
 gem 'jquery-rails'
