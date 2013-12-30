@@ -7,13 +7,16 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    if @user.save
-      handle_invitation
-      handle_stripe
-      AppMailer.send_welcome_email(@user).deliver
-      redirect_to sign_in_path
+    if handle_stripe
+      if @user.save
+        handle_invitation   
+        AppMailer.send_welcome_email(@user).deliver
+        redirect_to sign_in_path
+      else
+        render :new
+      end
     else
-      render :new
+      redirect_to register_path
     end  
   end
 
@@ -59,14 +62,16 @@ class UsersController < ApplicationController
     # Create the charge on Stripe's servers - this will charge the user's card
     begin
       charge = Stripe::Charge.create(
-        :amount => 999, # amount in cents, again
+        :amount => 999, # amount in cents
         :currency => "usd",
         :card => token,
         :description => "Sign up charge for #{@user.email}"
       )
+      return true
     rescue Stripe::CardError => e
       # The card has been declined
       flash[:error] = e.message
+      return false
     end   
   end  
 end
