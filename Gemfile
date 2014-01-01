@@ -43,4 +43,6 @@ group :test do
   gem 'shoulda-matchers'
   gem 'capybara'
   gem 'launchy'
+  gem 'vcr'
+  gem 'webmock', '1.8.0'
 end
