@@ -8,7 +8,8 @@ Stripe.setPublishableKey("#{ENV['STRIPE_PUBLISHABLE_KEY']}");
 %section.register.container
   .row
     .span10.offset1
-      = bootstrap_form_for(@user, style: :horizontal, left: "col-sm-2", right: "col-sm-10", id: "payment-form") do |f|
+      -# = bootstrap_form_for @user, html: { class: "form-horizontal", id: "payment-form"}  do |f|
+      = bootstrap_form_for(@user, style: :horizontal, left: "col-sm-2", right: "col-sm-10", html: { id: "payment-form" } ) do |f|
         %header
           %h1 Register
         %fieldset
@@ -22,13 +23,13 @@ Stripe.setPublishableKey("#{ENV['STRIPE_PUBLISHABLE_KEY']}");
         %fieldset.credit_card
           %span.payment-errors
           .control-group
-            %label.control-label Credit Card Number
+            %label.control-label(for="credit-card-number") Credit Card Number
             .controls
-              %input.span3(type="text" data-stripe="number")
+              %input.span3#credit-card-number(type="text" data-stripe="number")
           .control-group
-            %label.control-label Security Code
+            %label.control-label(for="security-code") Security Code
             .controls
-              %input.span3(type="text" data-stripe="cvc")
+              %input.span3#security-code(type="text" data-stripe="cvc")
           .control-group
             %label.control-label Expiration
             .controls

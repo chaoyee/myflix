@@ -7,17 +7,24 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    if handle_stripe
-      if @user.save
+    if @user.valid?
+      charge = StripeWrapper::Charge.create(
+        :amount => 999, # amount in cents
+        :card => params[:stripeToken],
+        :description => "Sign up charge for #{@user.email}"
+      ) 
+      if charge.successful?
+        @user.save
         handle_invitation   
         AppMailer.send_welcome_email(@user).deliver
         redirect_to sign_in_path
       else
+        flash[:error] = charge.error_message
         render :new
       end
     else
-      redirect_to register_path
-    end  
+      render :new
+    end    
   end
 
   def show
@@ -51,27 +58,4 @@ class UsersController < ApplicationController
       invitation.update_column(:token, nil)
     end  
   end
-  
-  def handle_stripe
-    # Set the stripe secret key 
-    Stripe.api_key = ENV['STRIPE_SECRET_KEY']
-    
-    # Get the credit card details submitted by the form
-    token = params[:stripeToken]
-    
-    # Create the charge on Stripe's servers - this will charge the user's card
-    begin
-      charge = Stripe::Charge.create(
-        :amount => 999, # amount in cents
-        :currency => "usd",
-        :card => token,
-        :description => "Sign up charge for #{@user.email}"
-      )
-      return true
-    rescue Stripe::CardError => e
-      # The card has been declined
-      flash[:error] = e.message
-      return false
-    end   
-  end  
 end

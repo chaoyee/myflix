@@ -45,4 +45,6 @@ group :test do
   gem 'launchy'
   gem 'vcr'
   gem 'webmock', '1.8.0'
+  gem 'selenium-webdriver'
+  gem 'database_cleaner'
 end
