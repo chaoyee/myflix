@@ -17,6 +17,8 @@ gem 'unicorn'
 gem 'carrierwave'
 gem 'mini_magick'
 gem 'fog'
+gem 'stripe'
+gem 'figaro'
 
 group :development do
   gem 'sqlite3'
@@ -41,4 +43,8 @@ group :test do
   gem 'shoulda-matchers'
   gem 'capybara'
   gem 'launchy'
+  gem 'vcr'
+  gem 'webmock', '1.8.0'
+  gem 'selenium-webdriver'
+  gem 'database_cleaner'
 end

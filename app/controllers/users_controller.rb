@@ -7,13 +7,26 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    if @user.save
-      handle_invitation
-      AppMailer.send_welcome_email(@user).deliver
-      redirect_to sign_in_path
+    if @user.valid?
+      charge = StripeWrapper::Charge.create(
+        :amount => 999, # amount in cents
+        :card => params[:stripeToken],
+        :description => "Sign up charge for #{@user.email}"
+      ) 
+      if charge.successful?
+        @user.save
+        handle_invitation   
+        AppMailer.send_welcome_email(@user).deliver
+        flash[:success] = "Thank you for registering with Myflix. Please sign in now."
+        redirect_to sign_in_path
+      else
+        flash[:error] = charge.error_message
+        render :new
+      end
     else
+      flash[:error] = "Invalid user information. Please check the errors below."
       render :new
-    end  
+    end    
   end
 
   def show

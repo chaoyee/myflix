@@ -1,15 +1,42 @@
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+Stripe.setPublishableKey("#{ENV['STRIPE_PUBLISHABLE_KEY']}");
+</script>
+
+= javascript_include_tag 'payment'
+
 %section.register.container
   .row
     .span10.offset1
-      = bootstrap_form_for @user, html: { class: "form-horizontal"} do |f|
+      -# = bootstrap_form_for @user, html: { class: "form-horizontal", id: "payment-form"}  do |f|
+      = bootstrap_form_for(@user, style: :horizontal, left: "col-sm-2", right: "col-sm-10", html: { id: "payment-form" } ) do |f|
         %header
           %h1 Register
         %fieldset
-          = f.email_field :email, label: "Email Address"
-          = f.password_field :password
-          = f.text_field :full_name, label: "Full Name"
-          = hidden_field_tag :invitation_token, @invitation_token
-        %fieldset.action
-          %label
-            %br  
+          .control-group
+            = f.email_field :email, label: "Email Address"
+          .control-group  
+            = f.password_field :password
+          .control-group  
+            = f.text_field :full_name, label: "Full Name"
+            = hidden_field_tag :invitation_token, @invitation_token
+        %fieldset.credit_card
+          %span.payment-errors
+          .control-group
+            %label.control-label(for="credit-card-number") Credit Card Number
+            .controls
+              %input.span3#credit-card-number(type="text" data-stripe="number")
+          .control-group
+            %label.control-label(for="security-code") Security Code
+            .controls
+              %input.span3#security-code(type="text" data-stripe="cvc")
+          .control-group
+            %label.control-label Expiration
+            .controls
+              = select_month(Date.today, {add_month_numbers: true},  class: 'span2', data: {stripe: "exp_month"})
+              = select_year(Date.today.year, {start_year: Date.today.year, end_year: Date.today.year + 4}, class: 'span1', data:{stripe: "exp-year"})
+        %fieldset.action.control-group
+          .controls  
             %input(type="submit" value="Sign Up" class="btn")
+          -# .controls
+            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key=#{ENV['STRIPE_PUBLISHABLE_KEY']} data-amount="999" data-name="Myflix Sign Up Charge" data-description="$9.99 to sign up the best video service" data-currency="usd"></script>
