@@ -5,4 +5,4 @@
     .videos.row
       - category.recent_videos.each do |video|
         .video.span2
-          = link_to(image_tag(video.small_cover_url), video_path(video))
+          = link_to( (video.small_cover_url), video_path(video))
