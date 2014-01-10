@@ -82,6 +82,14 @@ describe StripeWrapper do
         )
         expect(response.error_message).to eq("Your card was declined.")
       end
+
+      it "retuens customer_token with valid card", :vcr do
+        response = StripeWrapper::Customer.create(
+          :user => bob,
+          :card => valid_token
+        )
+        expect(response.customer_token).to be_present
+      end
     end
   end
 end
