@@ -1,6 +1,4 @@
 class Admin::VideosController < AdminsController
-  before_action :require_user
-  # before_filter :require_admin
 
   def new
     @video = Video.new    
