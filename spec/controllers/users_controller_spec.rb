@@ -19,9 +19,9 @@ describe UsersController do
     end
 
     context "failed user sign up" do
-      let(:charge) { double(:charge, successful?: false, error_message: "Your card was declined!") }
+      let(:result) { double(:sign_up_result, successful?: false, error_message: "Your card was declined!") }
       before do      
-        StripeWrapper::Charge.should_receive(:create).and_return(charge)
+        UserSignup.any_instance.should_receive(:sign_up).and_return(result)
         post :create, user: Fabricate.attributes_for(:user), stripeToken: '123211'
       end 
       it "renders the new template" do
